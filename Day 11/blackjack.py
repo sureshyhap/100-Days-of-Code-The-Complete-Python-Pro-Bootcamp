@@ -56,7 +56,7 @@ def main():
             continue
         player_sum = sum(player_hand)
         computer_sum = sum(computer_hand)
-        while computer_sum < player_sum:
+        while computer_sum < 17:
             deal_card(computer_hand)
             if check_busted(computer_hand):
                 print_end_game_state(player_hand, computer_hand)            
@@ -76,6 +76,11 @@ def main():
         elif computer_sum > player_sum:
             print_end_game_state(player_hand, computer_hand)
             print("Computer has higher hand, Computer wins!")
+            game_over = True
+            wants_to_play = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ").lower()
+        else:
+            print_end_game_state(player_hand, computer_hand)
+            print("You have a higher hand, You win!")
             game_over = True
             wants_to_play = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ").lower()
 
