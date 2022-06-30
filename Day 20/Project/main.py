@@ -17,43 +17,50 @@ screen.bgcolor("black")
 screen.title("My Snake Game")
 screen.tracer(n=0)
 
-snake = Snake()
-food = Food(screen)
-scoreboard = Scoreboard()
+snake_obj = Snake()
+food_obj = Food(screen)
+scoreboard_obj = Scoreboard()
 
 screen.listen()
-screen.onkey(snake.turn_up, "Up")
-screen.onkey(snake.turn_down, "Down")
-screen.onkey(snake.turn_left, "Left")
-screen.onkey(snake.turn_right, "Right")
+screen.onkey(snake_obj.turn_up, "Up")
+screen.onkey(snake_obj.turn_down, "Down")
+screen.onkey(snake_obj.turn_left, "Left")
+screen.onkey(snake_obj.turn_right, "Right")
+
+
+def wall_collision(snake):
+    return snake.snake[0].xcor() > WIDTH // 2 or snake.snake[0].xcor() < -WIDTH // 2 or \
+        snake.snake[0].ycor() > HEIGHT // 2 or snake.snake[0].ycor() < -HEIGHT // 2
+
+
+def tail_collision(snake):
+    for segment in snake.snake[1:]:
+        if snake.snake[0].distance(segment) <= 10:
+            return True
+    return False
+
+
+def food_collision(snake, food):
+    return snake.snake[0].distance(food) <= 15
+
 
 game_is_on = True
 while game_is_on:
     screen.update()
     time.sleep(.1)
-    snake.move()
+    snake_obj.move()
     # Collision with wall
-    if snake.snake[0].xcor() > WIDTH // 2 or snake.snake[0].xcor() < -WIDTH // 2 or \
-        snake.snake[0].ycor() > HEIGHT // 2 or snake.snake[0].ycor() < -HEIGHT // 2:
+    if wall_collision(snake_obj):
         game_is_on = False
     # Collision with tail
-    for i in range(1, len(snake.snake)):
-        if snake.snake[0].distance(snake.snake[i]) < 15:
-            game_is_on = False
-            break
+    if tail_collision(snake_obj):
+        game_is_on = False
     # Collision with food
-    if snake.snake[0].distance(food) <= 15:
-        scoreboard.update_score()
-        if snake.snake[-1].heading() == RIGHT:
-            snake.grow(snake.snake[-1].xcor() - 20, snake.snake[-1].ycor())
-        elif snake.snake[-1].heading() == LEFT:
-            snake.grow(snake.snake[-1].xcor() + 20, snake.snake[-1].ycor())
-        elif snake.snake[-1].heading() == UP:
-            snake.grow(snake.snake[-1].xcor(), snake.snake[-1].ycor() - 20)
-        elif snake.snake[-1].heading() == DOWN:
-            snake.grow(snake.snake[-1].xcor(), snake.snake[-1].ycor() + 20)
-        food.set_random_position()
-scoreboard.game_over()
+    if food_collision(snake_obj, food_obj):
+        scoreboard_obj.update_score()
+        snake_obj.growth()
+        food_obj.set_random_position()
+scoreboard_obj.game_over()
 
 
 screen.exitonclick()

@@ -1,6 +1,7 @@
 import turtle as t
 import random
 
+
 class Food(t.Turtle):
     def __init__(self, screen):
         super().__init__(shape="circle")
