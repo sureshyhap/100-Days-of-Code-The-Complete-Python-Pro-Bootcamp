@@ -1,11 +1,12 @@
 import turtle as t
 import random
 
-BALL_SPEED = 1
+BALL_SPEED = 7
 BALL_WIDTH = 20
 PERCENT_OF_SCREEN_HEIGHT = .667
 PERCENT_OF_SCREEN_WIDTH = .9
 FULL_CIRCLE_DEGREES = 360
+HALF_CIRCLE_DEGREES = 180
 
 class Ball(t.Turtle):
     def __init__(self, width, height):
@@ -13,7 +14,15 @@ class Ball(t.Turtle):
         super().penup()
         super().shape("square")
         super().color("white")
-        random_direction = random.randrange(360)
+        possible_directions = []
+        random_direction = random.randint(1, 45)
+        possible_directions.append(random_direction)
+        random_direction = random.randint(135, 179)
+        possible_directions.append(random_direction)
+        random_direction = random.randint(181, 225)
+        possible_directions.append(random_direction)
+        random_direction = random.randint(315, 359)
+        random_direction = random.choice(possible_directions)
         super().setheading(random_direction)
         super().settiltangle(-random_direction)
         self.width = width
@@ -32,11 +41,17 @@ class Ball(t.Turtle):
                 super().ycor() - (BALL_WIDTH / 2) >= PERCENT_OF_SCREEN_HEIGHT * (-self.height / 2):
             super().forward(BALL_SPEED)
         else:
-            self.bounce()
+            self.bounce_top_or_bottom()
             super().forward(BALL_SPEED)
 
-    def bounce(self):
+    def bounce_top_or_bottom(self):
         old_angle = super().heading()
         new_angle = FULL_CIRCLE_DEGREES - old_angle
+        super().setheading(new_angle)
+        super().settiltangle(-new_angle)
+
+    def bounce_left_or_right(self):
+        old_angle = super().heading()
+        new_angle = HALF_CIRCLE_DEGREES - old_angle
         super().setheading(new_angle)
         super().settiltangle(-new_angle)
