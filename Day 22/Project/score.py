@@ -14,9 +14,11 @@ class Score(t.Turtle):
         super().penup()
         super().color("white")
         if self.which_side == "left":
+            # Position the left side score keeping
             super().setx(PERCENT_OF_SCREEN_WIDTH * (-self.width / 2))
             super().sety(PERCENT_OF_SCREEN_HEIGHT * (self.height / 2))
         elif self.which_side == "right":
+            # Position the right side score keeping
             super().setx(PERCENT_OF_SCREEN_WIDTH * (self.width / 2))
             super().sety(PERCENT_OF_SCREEN_HEIGHT * (self.height / 2))
         super().write(arg=f"{self.score}", align=self.which_side, font=("Arial", 48, "bold"))

@@ -17,6 +17,7 @@ class PaddleSegment(t.Turtle):
         super().penup()
         super().shape("square")
         super().color("white")
+        # Decreases y coordinate for each new segment to eventually form a rectangular paddle
         super().sety(super().ycor() - SEGMENT_SIZE * which_segment)
 
 
@@ -26,23 +27,28 @@ class Paddle:
         self.height = height
         self.paddle_body = []
         for i in range(NUM_SEGMENTS_IN_PADDLE):
+            # Adds segments each with lower y values to form a whole paddle
             segment = PaddleSegment(i)
             self.paddle_body.append(segment)
         self.top = self.paddle_body[0]
         self.bottom = self.paddle_body[-1]
         for segment in self.paddle_body:
             if which_side == "left":
+                # Positioning the left paddle
                 segment.setx((PERCENT_OF_SCREEN_WIDTH * (-self.width / 2)) + (self.width / 2) * PERCENT_AWAY_EDGE)
             elif which_side == "right":
+                # Positioning the right paddle
                 segment.setx((PERCENT_OF_SCREEN_WIDTH * (self.width / 2)) - (self.width / 2) * PERCENT_AWAY_EDGE)
 
     def move_up(self):
+        # Cannot move above the top of the screen
         if self.top.ycor() + INCREMENT <= PERCENT_OF_SCREEN_HEIGHT * (self.height / 2):
             for segment in self.paddle_body:
                 segment.setheading(UP)
                 segment.forward(INCREMENT)
 
     def move_down(self):
+        # Cannot move below the bottom of the screen
         if self.bottom.ycor() - INCREMENT >= PERCENT_OF_SCREEN_HEIGHT * (-self.height / 2):
             for segment in self.paddle_body:
                 segment.setheading(DOWN)

@@ -18,6 +18,7 @@ class Divisions:
     def __init__(self, width, height):
         self.width = width
         self.height = height
+        # Dividing line of dashes
         self.vertical_bars = []
         for i in range(-height // 2, height // 2, SKIP):
             next_bar = Bar()
