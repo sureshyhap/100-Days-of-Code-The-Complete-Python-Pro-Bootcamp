@@ -6,14 +6,18 @@ BACKGROUND_COLOR = "#B1DDC6"
 WAIT_TIME = 3000
 word = None
 french_or_english = "french"
-
+frequent_words = None
 
 def correct():
     if french_or_english == "french":
         pass
     elif french_or_english == "english":
-        global word_pool
+        global word_pool, frequent_words
         word_pool.remove(word)
+        frequent_words.drop(frequent_words[frequent_words.French == word].index, axis=0, inplace=True)
+        frequent_words.to_csv("data/words_to_learn.csv", index=False)
+        if len(word_pool) == 0:
+            exit(0)
         display_word_french(word_pool, dictionary)
 
 
@@ -28,10 +32,10 @@ def display_word_french(words_left, dictionary):
     global french_or_english
     french_or_english = "french"
     canvas_flash_card.itemconfig(image, image=flash_card_front)
-    canvas_flash_card.itemconfig(which_language, text="French")
+    canvas_flash_card.itemconfig(which_language, text="French", fill="black")
     global word
     word = random.choice(words_left)
-    canvas_flash_card.itemconfig(word_text, text=word)
+    canvas_flash_card.itemconfig(word_text, text=word, fill="black")
     window.after(WAIT_TIME, display_word_english, words_left, dictionary, word)
 
 
@@ -39,12 +43,18 @@ def display_word_english(words_left, dictionary, word):
     global french_or_english
     french_or_english = "english"
     canvas_flash_card.itemconfig(image, image=flash_card_back)
-    canvas_flash_card.itemconfig(which_language, text="English")
+    canvas_flash_card.itemconfig(which_language, text="English", fill="white")
     english_word = dictionary[word]
-    canvas_flash_card.itemconfig(word_text, text=english_word)
+    canvas_flash_card.itemconfig(word_text, text=english_word, fill="white")
 
-
-frequent_words = pandas.read_csv("data/french_words.csv")
+try:
+    frequent_words = pandas.read_csv("data/words_to_learn.csv")
+    if len(frequent_words) == 0:
+        raise ValueError
+except (FileNotFoundError, ValueError):
+    frequent_words = pandas.read_csv("data/french_words.csv.csv")
+    frequent_words.to_csv("data/words_to_learn.csv", index=False)
+print(frequent_words)
 dictionary = {row["French"]: row["English"] for index, row in frequent_words.iterrows()}
 word_pool = [french for french in dictionary]
 
