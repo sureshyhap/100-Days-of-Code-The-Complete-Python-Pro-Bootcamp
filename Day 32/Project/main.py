@@ -4,7 +4,7 @@ import random
 import smtplib
 
 my_email = "sureshyhap@yahoo.com"
-my_password = "pparacolbumfhszd"
+my_password = input("Enter your password")
 now = dt.datetime.now()
 this_month = now.month
 this_day = now.day
