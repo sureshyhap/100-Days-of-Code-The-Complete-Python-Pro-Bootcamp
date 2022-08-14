@@ -8,14 +8,6 @@ def generate():
     nr_letters = random.randint(8, 10)
     nr_symbols = random.randint(2, 4)
     nr_numbers = random.randint(2, 4)
-
-    #Eazy Level - Order not randomised:
-    #e.g. 4 letter, 2 symbol, 2 number = JduE&!91
-
-
-    #Hard Level - Order of characters randomised:
-    #e.g. 4 letter, 2 symbol, 2 number = g^2jk8&P
-
     letters_list = [random.choice(letters) for _ in range(nr_letters)]
     symbols_list = [random.choice(symbols) for _ in range(nr_symbols)]
     numbers_list = [random.choice(numbers) for _ in range(nr_numbers)]
