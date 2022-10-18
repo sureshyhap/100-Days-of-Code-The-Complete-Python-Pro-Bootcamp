@@ -29,10 +29,30 @@ response = requests.get(url="https://api.sunrise-sunset.org/json", params=parame
 response.raise_for_status()
 
 data = response.json()
-sunrise_time = data["results"]["sunrise"]
-sunset_time = data["results"]["sunset"]
+sunrise_ = data["results"]["sunrise"]
+sunset_ = data["results"]["sunset"]
 
+print(sunrise_)
+print(sunset_)
+
+sunrise = sunrise_.split("T")
+sunrise_date = sunrise[0].split("-")
+sunrise_time = sunrise[1].split(":")
+sunset = sunset_.split("T")
+sunset_date = sunset[0].split("-")
+sunset_time = sunset[1].split(":")
+
+print(sunrise_date)
 print(sunrise_time)
+print()
+print(sunset_date)
 print(sunset_time)
 
-now = dt.datetime.now()
+now_ = dt.datetime.now()
+now = str(now_).split(" ")
+now_date = now[0].split("-")
+now_time = now[1].split(":")
+
+print()
+print(now_date)
+print(now_time)
